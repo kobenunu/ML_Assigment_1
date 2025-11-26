@@ -41,9 +41,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
         Dictionary containing models, predictions, and evaluation metrics
     """
 
-    logger.info("="*70)
     logger.info("MODEL TRAINING AND EVALUATION")
-    logger.info("="*70)
 
     # Separate features and target
     if target_column not in df.columns:
@@ -75,7 +73,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     if df[target_column].dtype == 'object' or not np.issubdtype(df[target_column].dtype, np.number):
         label_encoder = LabelEncoder()
         y = label_encoder.fit_transform(df[target_column].astype(str))
-        logger.info(f"\nTarget classes encoded: {label_encoder.classes_}")
+        logger.info(f"Target classes encoded: {label_encoder.classes_}")
 
     # Split the data
     train_size = 1.0 - test_size
@@ -84,7 +82,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     )
 
     # Dataset information
-    logger.info(f"\nDataset Information:")
+    logger.info(f"  Dataset Information:")
     logger.info(f"  Total samples: {len(df)}")
     logger.info(f"  Number of features: {X.shape[1]}")
     logger.info(f"  Number of classes: {len(np.unique(y))}")
@@ -97,9 +95,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     # ========================================================================
     # Train Standard Decision Tree
     # ========================================================================
-    logger.info("\n" + "="*70)
     logger.info("1. TRAINING STANDARD DECISION TREE")
-    logger.info("="*70)
 
     standard_dt = DecisionTreeClassifier(random_state=random_state)
     standard_dt.fit(X_train, y_train)
@@ -108,7 +104,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     y_proba_standard = standard_dt.predict_proba(X_test)
 
     accuracy_standard = accuracy_score(y_test, y_pred_standard)
-    logger.info(f"\nAccuracy: {accuracy_standard:.4f}")
+    logger.info(f"Accuracy: {accuracy_standard:.4f}")
 
     # Calculate AUC
     n_classes = len(np.unique(y))
@@ -125,10 +121,8 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     # ========================================================================
     # Train Soft Split Decision Tree
     # ========================================================================
-    logger.info("\n" + "="*70)
     logger.info("2. TRAINING SOFT SPLIT DECISION TREE")
-    logger.info("="*70)
-    logger.info(f"\nParameters: alpha={alpha}, n_runs={n_runs}")
+    logger.info(f"Parameters: alpha={alpha}, n_runs={n_runs}")
 
     soft_dt = SoftSplitDecisionTreeClassifier(
         alpha=alpha,
@@ -142,7 +136,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     y_pred_soft = soft_dt.predict(X_test)
 
     accuracy_soft = accuracy_score(y_test, y_pred_soft)
-    logger.info(f"\nAccuracy: {accuracy_soft:.4f}")
+    logger.info(f"Accuracy: {accuracy_soft:.4f}")
 
     # Calculate AUC
     if n_classes == 2:
@@ -156,9 +150,7 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
     # ========================================================================
     # Comparison
     # ========================================================================
-    logger.info("\n" + "="*70)
     logger.info("3. COMPARISON SUMMARY")
-    logger.info("="*70)
 
     results_df = pd.DataFrame({
         'Method': ['Standard DT', 'Soft Split DT'],
@@ -168,27 +160,25 @@ def train_and_evaluate_models(df, target_column, test_size=0.2, alpha=0.1,
         'AUC': [f"{auc_standard:.4f}", f"{auc_soft:.4f}"]
     })
 
-    logger.info("\n", results_df.to_string(index=False))
+    logger.info(results_df.to_string(index=False))
 
     acc_diff = accuracy_soft - accuracy_standard
     auc_diff = auc_soft - auc_standard
 
-    logger.info(f"\nAccuracy difference: {acc_diff:+.4f}")
+    logger.info(f"Accuracy difference: {acc_diff:+.4f}")
     logger.info(f"AUC difference: {auc_diff:+.4f}")
 
     # ========================================================================
     # Save Models
     # ========================================================================
     if save_models:
-        logger.info("\n" + "="*70)
         logger.info("4. SAVING MODELS")
-        logger.info("="*70)
 
         # Save standard model
         standard_filename = f"{model_prefix}_standard_dt.pkl"
         with open(standard_filename, 'wb') as f:
             pickle.dump(standard_dt, f)
-        logger.info(f"\nSaved standard model to: {standard_filename}")
+        logger.info(f"Saved standard model to: {standard_filename}")
 
         # Save soft split model
         soft_filename = f"{model_prefix}_soft_split_dt.pkl"

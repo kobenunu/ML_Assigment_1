@@ -3,6 +3,7 @@ from rich.logging import RichHandler
 logger = logging.getLogger(__name__)
 import pandas as pd
 import os
+from TrainFlow import train_and_evaluate_models
 
 def map_gender(df):
     df = df.copy()
@@ -99,6 +100,22 @@ def preprocess_data():
     preprocess_weather_data('weather')
     preprocess_diabetes_data('diabetes')
 
+def get_all_files_in_path(path):
+    """
+    Get all files in the given directory path.
+
+    Args:
+        path (str): The directory path to search for files.
+
+    Returns:
+        list: A list of file paths in the directory.
+    """
+    file_list = []
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            file_list.append(os.path.join(root, file))
+    return file_list
+
 if __name__ == "__main__":
     
     logging.basicConfig(
@@ -111,5 +128,12 @@ if __name__ == "__main__":
 
     processed_dir = './datasets/processed'
     os.makedirs(processed_dir, exist_ok=True)
-    preprocess_data()
+    #preprocess_data()
+    files = get_all_files_in_path(processed_dir)
+
+    for file in files:
+        df = pd.read_csv(file)
+        train_and_evaluate_models(df, target_column='target')
+
+
 
