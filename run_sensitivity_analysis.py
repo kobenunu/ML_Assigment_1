@@ -168,8 +168,8 @@ def run_sensitivity_on_all_datasets(
                 'alpha': row['alpha'],
                 'auc_improvement': row['auc_improvement'],
                 'accuracy_improvement': row['accuracy_improvement'],
-                'soft_auc_mean': row['soft_auc_mean'],
-                'soft_accuracy_mean': row['soft_accuracy_mean']
+                'soft_auc': row['soft_auc'],
+                'soft_accuracy': row['soft_accuracy']
             })
     
     alpha_summary_df = pd.DataFrame(alpha_summary)
@@ -186,8 +186,8 @@ def run_sensitivity_on_all_datasets(
                 'n_runs': row['n_runs'],
                 'auc_improvement': row['auc_improvement'],
                 'accuracy_improvement': row['accuracy_improvement'],
-                'soft_auc_mean': row['soft_auc_mean'],
-                'soft_accuracy_mean': row['soft_accuracy_mean']
+                'soft_auc': row['soft_auc'],
+                'soft_accuracy': row['soft_accuracy']
             })
     
     n_runs_summary_df = pd.DataFrame(n_runs_summary)
@@ -205,8 +205,8 @@ def run_sensitivity_on_all_datasets(
                 'n_runs': row['n_runs'],
                 'auc_improvement': row['auc_improvement'],
                 'accuracy_improvement': row['accuracy_improvement'],
-                'soft_auc_mean': row['soft_auc_mean'],
-                'soft_accuracy_mean': row['soft_accuracy_mean']
+                'soft_auc': row['soft_auc'],
+                'soft_accuracy': row['soft_accuracy']
             })
     
     combined_summary_df = pd.DataFrame(combined_summary)
