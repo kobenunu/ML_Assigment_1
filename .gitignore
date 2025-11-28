@@ -3,3 +3,26 @@
 *.log
 __pycache__/
 *.pyc
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Model files
+*.pkl
+
+# Results
+results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
