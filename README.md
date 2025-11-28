@@ -1,6 +1,6 @@
 # ML Assignment 1 - Soft Split Decision Trees
 
-Implementation of soft split decision trees with repeated K-fold cross-validation.
+Implementation of soft split decision trees with repeated K-fold cross-validation and sensitivity analysis.
 
 ## Project Structure
 
@@ -10,11 +10,16 @@ Implementation of soft split decision trees with repeated K-fold cross-validatio
 ├── SoftSplitTreeModel.py        # Soft split decision tree classifier
 ├── TrainFlow.py                 # Model training utilities
 ├── KFoldCrossValidation.py      # Cross-validation implementation
+├── SensitivityAnalysis.py       # Sensitivity analysis module
 ├── run_cross_validation.py      # Cross-validation runner
+├── run_sensitivity_analysis.py  # Sensitivity analysis runner
+├── GenerateVisualizations.py    # Visualization generator
 ├── requirements.txt             # Dependencies
 ├── datasets/                    # Raw data
 ├── datasets/processed/          # Preprocessed data
-└── results/                     # Output files
+├── results/                     # Cross-validation results
+├── results/sensitivity/         # Sensitivity analysis results
+└── results/visualizations/      # Generated plots
 ```
 
 ## Setup
@@ -45,7 +50,40 @@ Run cross-validation on all datasets:
 python run_cross_validation.py
 ```
 
-This runs 5-fold cross-validation with 2 repeats. Results are saved to results/ directory including summary tables and sensitivity analysis.
+This runs 5-fold cross-validation with 2 repeats. Results are saved to results/ directory including summary tables and detailed fold results.
+
+## Sensitivity Analysis
+
+Test different alpha and n_runs parameter values:
+
+```bash
+python run_sensitivity_analysis.py
+```
+
+This evaluates performance across:
+
+-   Alpha values: [0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+-   n_runs values: [10, 25, 50, 75, 100, 150, 200]
+
+Results are saved to results/sensitivity/ directory.
+
+## Generate Visualizations
+
+Create plots from sensitivity analysis results:
+
+```bash
+python GenerateVisualizations.py
+```
+
+Generates:
+
+-   Alpha sensitivity plots (performance vs alpha)
+-   n_runs sensitivity plots (performance vs n_runs)
+-   Heatmaps showing parameter combinations
+-   Cross-dataset comparison plots
+-   Best parameters summary
+
+Plots are saved to results/visualizations/ directory.
 
 ## Implementation
 
