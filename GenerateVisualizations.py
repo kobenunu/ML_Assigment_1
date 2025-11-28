@@ -13,6 +13,10 @@ import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(
+        level=logging.INFO,
+        format="%(module)s:: %(message)s"
+    )
 
 # Set style
 sns.set_style("whitegrid")
@@ -358,12 +362,3 @@ def generate_all_visualizations(sensitivity_dir='./results/sensitivity',
     logger.info("VISUALIZATION GENERATION COMPLETE")
     logger.info("="*80)
     logger.info(f"\nAll plots saved to: {output_dir}/")
-
-
-if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(module)s:: %(message)s"
-    )
-    
-    generate_all_visualizations()

@@ -290,7 +290,7 @@ def run_sensitivity_analysis(dataset_path, target_column='target',
         'dataset': dataset_name
     }
 
-if __name__ == "__main__":
+def run_cross_validation():
     logger.info("Starting Cross-Validation Analysis")
     logger.info("="*80)
     

@@ -3,7 +3,9 @@ from rich.logging import RichHandler
 logger = logging.getLogger(__name__)
 import pandas as pd
 import os
-from TrainFlow import train_and_evaluate_models
+from run_cross_validation import run_cross_validation
+from run_sensitivity_analysis import run_sensitivity_analysis
+from GenerateVisualizations import generate_all_visualizations
 
 def map_gender(df):
     df = df.copy()
@@ -129,11 +131,10 @@ if __name__ == "__main__":
     processed_dir = './datasets/processed'
     os.makedirs(processed_dir, exist_ok=True)
     #preprocess_data()
-    files = get_all_files_in_path(processed_dir)
 
-    for file in files:
-        df = pd.read_csv(file)
-        train_and_evaluate_models(df, target_column='target')
+    run_cross_validation()
+    run_sensitivity_analysis()
+    generate_all_visualizations()
 
 
 

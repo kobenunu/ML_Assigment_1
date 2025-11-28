@@ -231,7 +231,7 @@ def run_sensitivity_on_all_datasets(
     return all_results
 
 
-if __name__ == "__main__":
+def run_sensitivity_analysis():
     logger.info("Starting Sensitivity Analysis")
     logger.info("="*80)
     
