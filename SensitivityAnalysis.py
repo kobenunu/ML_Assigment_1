@@ -122,7 +122,7 @@ def run_alpha_sensitivity(df, target_column='target',
         soft_dt.fit(X_train, y_train)
         
         y_proba_soft = soft_dt.predict_proba(X_test)
-        y_pred_soft = soft_dt.predict(X_test)
+        y_pred_soft = np.argmax(y_proba_soft, axis=1)
         
         soft_accuracy = accuracy_score(y_test, y_pred_soft)
         
