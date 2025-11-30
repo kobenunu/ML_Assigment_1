@@ -2,42 +2,33 @@ from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import logging
 logger = logging.getLogger(__name__)
+class SoftSplitDecisionTreeClassifier(DecisionTreeClassifier):
+    """
+    A Decision Tree Classifier that employs 'soft splits' during inference.
 
-class SoftSplitTreeModel(DecisionTreeClassifier):
-    def __init__(
-        self,
-        alpha: Float = 0.0,
-        n_samples_predictions: Int = 1,
-        *,
-        criterion: Literal["gini", "entropy", "log_loss", "gini"] = "gini",
-        splitter: Literal["best", "random", "best"] = "best",
+    During prediction, at each split node, a sample is routed to the opposite
+    direction of the split condition with probability 'alpha', and according
+    to the condition with probability '1 - alpha'.
+    The final prediction is the average probability vector over 'n_runs' runs.
+    """
 
-        max_depth: None | Int = None,
-        min_samples_split: float | int = 2,
-        min_samples_leaf: float | int = 1,
-        min_weight_fraction_leaf: Float = 0.0,
-        max_features: float | None | Literal["auto", "sqrt", "log2"] | int = None,
+    def __init__(self, alpha=0.1, n_runs=100, **kwargs):
+        """
+        Initializes the SoftSplitDecisionTreeClassifier.
 
-        random_state: RandomState | None | int = None,
-        max_leaf_nodes: None | Int = None,
-        min_impurity_decrease: Float = 0.0,
-        class_weight: None | Mapping | str | Sequence[Mapping] = None,
-        ccp_alpha: float = 0.0,
-    ) -> None:
-        super(SoftSplitTreeModel, self).__init__(
-            criterion=criterion,
-            splitter=splitter,
-            max_depth=max_depth,
-            min_samples_split=min_samples_split,
-            min_samples_leaf=min_samples_leaf,
-            min_weight_fraction_leaf=min_weight_fraction_leaf,
-            max_features=max_features,
-            random_state=random_state,
-            max_leaf_nodes=max_leaf_nodes,
-            min_impurity_decrease=min_impurity_decrease,
-            class_weight=class_weight,
-            ccp_alpha=ccp_alpha,
-        )
+        Args:
+            alpha (float): Probability of routing a sample in the opposite
+                           direction of the split condition (0.0 < alpha < 1.0).
+            n_runs (int): Number of times to run the soft-split prediction for
+                          each sample.
+            **kwargs: Arguments passed to the base DecisionTreeClassifier.
+        """
+        if not 0.0 < alpha < 1.0:
+            raise ValueError("alpha must be between 0.0 and 1.0.")
+        if not isinstance(n_runs, int) or n_runs <= 0:
+            raise ValueError("n_runs must be a positive integer.")
+
+        super().__init__(**kwargs)
         self.alpha = alpha
         self.n_runs = n_runs
 
