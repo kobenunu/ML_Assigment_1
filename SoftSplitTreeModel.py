@@ -10,7 +10,7 @@ import pandas as pd
 import logging
 logger = logging.getLogger(__name__)
 
-class SoftSplitTreeModel(DecisionTreeClassifier):
+class SoftSplitDecisionTreeClassifier(DecisionTreeClassifier):
     def __init__(
         self,
         alpha: Float = 0.0,
@@ -31,7 +31,7 @@ class SoftSplitTreeModel(DecisionTreeClassifier):
         class_weight: None | Mapping | str | Sequence[Mapping] = None,
         ccp_alpha: float = 0.0,
     ) -> None:
-        super(SoftSplitTreeModel, self).__init__(
+        super(SoftSplitDecisionTreeClassifier, self).__init__(
             criterion=criterion,
             splitter=splitter,
             max_depth=max_depth,
