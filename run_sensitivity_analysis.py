@@ -95,39 +95,39 @@ def run_sensitivity_on_all_datasets(
             df = pd.read_csv(file_path)
             logger.info(f"Loaded {len(df)} samples from {file}")
             
-            # Alpha sensitivity
-            logger.info(f"\nRunning alpha sensitivity analysis...")
-            alpha_results = run_alpha_sensitivity(
-                df=df,
-                target_column='target',
-                alpha_values=alpha_values,
-                n_runs=100,  # Fixed for alpha analysis
-                test_size=test_size,
-                random_state=random_state
-            )
-            all_results['alpha_sensitivity'][dataset_name] = alpha_results
+            # # Alpha sensitivity
+            # logger.info(f"\nRunning alpha sensitivity analysis...")
+            # alpha_results = run_alpha_sensitivity(
+            #     df=df,
+            #     target_column='target',
+            #     alpha_values=alpha_values,
+            #     n_runs=100,  # Fixed for alpha analysis
+            #     test_size=test_size,
+            #     random_state=random_state
+            # )
+            # all_results['alpha_sensitivity'][dataset_name] = alpha_results
             
-            # Save alpha results
-            alpha_path = os.path.join(results_dir, f'{dataset_name}_alpha_sensitivity.csv')
-            alpha_results.to_csv(alpha_path, index=False)
-            logger.info(f"Saved alpha sensitivity to {alpha_path}")
+            # # Save alpha results
+            # alpha_path = os.path.join(results_dir, f'{dataset_name}_alpha_sensitivity.csv')
+            # alpha_results.to_csv(alpha_path, index=False)
+            # logger.info(f"Saved alpha sensitivity to {alpha_path}")
             
-            # n_runs sensitivity
-            logger.info(f"\nRunning n_runs sensitivity analysis...")
-            n_runs_results = run_n_runs_sensitivity(
-                df=df,
-                target_column='target',
-                n_runs_values=n_runs_values,
-                alpha=0.1,  # Fixed for n_runs analysis
-                test_size=test_size,
-                random_state=random_state
-            )
-            all_results['n_runs_sensitivity'][dataset_name] = n_runs_results
+            # # n_runs sensitivity
+            # logger.info(f"\nRunning n_runs sensitivity analysis...")
+            # n_runs_results = run_n_runs_sensitivity(
+            #     df=df,
+            #     target_column='target',
+            #     n_runs_values=n_runs_values,
+            #     alpha=0.1,  # Fixed for n_runs analysis
+            #     test_size=test_size,
+            #     random_state=random_state
+            # )
+            # all_results['n_runs_sensitivity'][dataset_name] = n_runs_results
             
-            # Save n_runs results
-            n_runs_path = os.path.join(results_dir, f'{dataset_name}_nruns_sensitivity.csv')
-            n_runs_results.to_csv(n_runs_path, index=False)
-            logger.info(f"Saved n_runs sensitivity to {n_runs_path}")
+            # # Save n_runs results
+            # n_runs_path = os.path.join(results_dir, f'{dataset_name}_nruns_sensitivity.csv')
+            # n_runs_results.to_csv(n_runs_path, index=False)
+            # logger.info(f"Saved n_runs sensitivity to {n_runs_path}")
             
             # Combined sensitivity (for heatmaps)
             logger.info(f"\nRunning combined sensitivity analysis...")
@@ -237,10 +237,10 @@ def run_sensitivity_analysis():
     
     # Run sensitivity analysis on all datasets
     results = run_sensitivity_on_all_datasets(
-        alpha_values=[0.01, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3],
+        alpha_values=[0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 1],
         n_runs_values=[10, 25, 50, 75, 100, 150, 200],
-        combined_alpha=[0.05, 0.1, 0.15, 0.2],
-        combined_n_runs=[50, 100, 150],
+        combined_alpha=[0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 1],
+        combined_n_runs=[10, 25, 50, 75, 100, 150, 200],
         test_size=0.2,
         random_state=42
     )
