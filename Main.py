@@ -131,9 +131,9 @@ if __name__ == "__main__":
     os.makedirs(processed_dir, exist_ok=True)
     #preprocess_data() # Uncomment this line if preprocessing is needed
     
-    run_cross_validation()
+    #run_cross_validation()
     run_sensitivity_analysis()
-    generate_all_visualizations()
+    #generate_all_visualizations()
 
 
 
