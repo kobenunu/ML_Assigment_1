@@ -331,7 +331,8 @@ def run_combined_sensitivity(df, target_column='target',
             soft_dt = SoftSplitDecisionTreeClassifier(
                 alpha=alpha,
                 n_runs=n_runs,
-                random_state=random_state
+                random_state=random_state,
+                max_depth=1
             )
             soft_dt.fit(X_train, y_train)
             
