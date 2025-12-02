@@ -10,11 +10,7 @@ import logging
 from rich.logging import RichHandler
 import pandas as pd
 import os
-from SensitivityAnalysis import (
-    run_alpha_sensitivity,
-    run_n_runs_sensitivity,
-    run_combined_sensitivity
-)
+from SensitivityAnalysis import run_combined_sensitivity
 
 # Setup logging
 logging.basicConfig(
