@@ -69,7 +69,7 @@ class SoftSplitDecisionTreeClassifier(DecisionTreeClassifier):
             sample = X[i, :]
 
             # Route the sample down the tree until a leaf is reached
-            while feature[current_node] != tree._tree.TREE_UNDEFINED:
+            while feature[current_node] != -2:
                 # 1. Determine the 'correct' route based on the condition
                 feat = feature[current_node]
                 thresh = threshold[current_node]
