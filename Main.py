@@ -12,21 +12,6 @@ def map_gender(df):
     df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
     return df
 
-def map_sex(df):
-    df = df.copy()
-    df['Sex'] = df['Sex'].map({'Male': 1, 'Female': 0})
-    return df
-
-def map_blood_pressure(df):
-    df = df.copy()
-
-    if 'Blood Pressure' in df.columns:
-        df[['Systolic', 'Diastolic']] = (
-            df['Blood Pressure'].str.split('/', expand=True).astype(int)
-        )
-        df = df.drop(columns=['Blood Pressure'])
-
-    return df
 
 def load_data(dataset_name):
     logger.info(f"Loading {dataset_name} dataset...")
@@ -68,11 +53,6 @@ def preprocess_drug_consumption_data(dataset_name):
                        target_column='Cannabis',
                        actions=[])
 
-def preprocess_heart_attack_data(dataset_name):
-    preprocess_dataset(dataset_name,
-                       drop_columns=["Patient ID", "Continent", "Hemisphere"],
-                       cat_cols =["Country","Diet"],
-                       target_column="Heart Attack Risk", actions = [map_sex, map_blood_pressure])
     
 def preprocess_bank_churn_data(dataset_name):
     preprocess_dataset(dataset_name,
@@ -94,13 +74,20 @@ def preprocess_diabetes_data(dataset_name):
                        target_column="Diabetes",
                        actions=[])
     
+def preprocess_phone_data(dataset_name):
+    preprocess_dataset(dataset_name,
+                       drop_columns=[],
+                       cat_cols=[],
+                       target_column="price_range",
+                       actions=[])
+    
 
 def preprocess_data():
     preprocess_bank_churn_data('bank_churn')
     preprocess_drug_consumption_data('drug_consumption')
-    preprocess_heart_attack_data('heart_attack')
     preprocess_weather_data('weather')
     preprocess_diabetes_data('diabetes')
+    preprocess_phone_data('phone')
 
 def get_all_files_in_path(path):
     """
@@ -131,9 +118,9 @@ if __name__ == "__main__":
     os.makedirs(processed_dir, exist_ok=True)
     preprocess_data() # Uncomment this line if preprocessing is needed
     
-    #run_cross_validation()
+    run_cross_validation()
     run_sensitivity_analysis()
-    #generate_all_visualizations()
+    generate_all_visualizations()
 
 
 

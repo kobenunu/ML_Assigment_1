@@ -142,8 +142,8 @@ def run_sensitivity_analysis():
     
     # Run sensitivity analysis on all datasets
     results = run_sensitivity_on_all_datasets(
-        combined_alpha=[0.05, 0.1, 0.2, 0.3, 0.5, 0.8, 0.95],
-        combined_n_runs=[10, 25, 50, 75, 100, 150, 200],
+        combined_alpha=[0.05, 0.1, 0.3, 0.5, 0.8, 0.95, 0.99],
+        combined_n_runs=[10, 25, 50, 75, 100, 200],
         test_size=0.2,
         random_state=42
     )

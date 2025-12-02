@@ -170,7 +170,7 @@ def run_cross_validation_on_all_datasets(n_splits=5, n_repeats=2, alpha=0.1,
     }
 
 def run_sensitivity_analysis(dataset_path, target_column='target', 
-                             alphas=[0.05, 0.1, 0.15, 0.2],
+                             alphas=[0.05, 0.1, 0.3, 0.5],
                              n_runs_list=[50, 100, 150, 200],
                              n_splits=5, n_repeats=2, random_state=42):
     """
