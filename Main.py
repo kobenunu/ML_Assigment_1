@@ -46,7 +46,7 @@ def preprocess_dataset(dataset_name, drop_columns: list, cat_cols: list, target_
     df = df.drop(columns=drop_columns)
 
     # Ensure categorical columns exist in the DataFrame
-    df = pd.get_dummies(df, columns=cat_cols, drop_first=True)
+    df = pd.get_dummies(df, columns=cat_cols, drop_first=True, dtype=int)
 
     # Apply actions and ensure they return a DataFrame
     if len(actions) > 0:
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     processed_dir = './datasets/processed'
     os.makedirs(processed_dir, exist_ok=True)
-    #preprocess_data() # Uncomment this line if preprocessing is needed
+    preprocess_data() # Uncomment this line if preprocessing is needed
     
     run_cross_validation()
     run_sensitivity_analysis()
