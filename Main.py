@@ -116,11 +116,8 @@ if __name__ == "__main__":
 
     processed_dir = './datasets/processed'
     os.makedirs(processed_dir, exist_ok=True)
-    preprocess_data() # Uncomment this line if preprocessing is needed
-    
-    run_cross_validation()
-    run_sensitivity_analysis()
-    generate_all_visualizations()
-
-
-
+    #preprocess_data() # Uncomment this line if preprocessing is needed
+    should_use_improved_version=True
+    #run_cross_validation(should_use_improved_version)
+    #run_sensitivity_analysis(should_use_improved_version)
+    generate_all_visualizations(should_use_improved_version)

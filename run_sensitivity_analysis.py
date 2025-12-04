@@ -28,6 +28,7 @@ def get_dataset_name(file_path):
 
 
 def run_sensitivity_on_all_datasets(
+    should_use_improved_version,
     combined_alpha=[0.05, 0.1, 0.15, 0.2],
     combined_n_runs=[50, 100, 150],
     test_size=0.2,
@@ -60,6 +61,9 @@ def run_sensitivity_on_all_datasets(
     results_dir = './results/sensitivity'
     os.makedirs(results_dir, exist_ok=True)
     
+    if should_use_improved_version:
+        combined_n_runs = [10]
+
     # Get all processed datasets
     files = [f for f in os.listdir(processed_dir) if f.endswith('_processed.csv')]
     
@@ -93,6 +97,7 @@ def run_sensitivity_on_all_datasets(
             logger.info(f"\nRunning combined sensitivity analysis...")
             combined_results = run_combined_sensitivity(
                 df=df,
+                should_use_improved_version=should_use_improved_version,
                 target_column='target',
                 alpha_values=combined_alpha,
                 n_runs_values=combined_n_runs,
@@ -136,12 +141,13 @@ def run_sensitivity_on_all_datasets(
     return all_results
 
 
-def run_sensitivity_analysis():
+def run_sensitivity_analysis(should_use_improved_version=False):
     logger.info("Starting Sensitivity Analysis")
     logger.info("="*80)
     
     # Run sensitivity analysis on all datasets
     results = run_sensitivity_on_all_datasets(
+        should_use_improved_version=should_use_improved_version,
         combined_alpha=[0.05, 0.1, 0.3, 0.5, 0.8, 0.95, 0.99],
         combined_n_runs=[10, 25, 50, 75, 100, 200],
         test_size=0.2,

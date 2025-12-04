@@ -8,10 +8,11 @@ from scipy import stats
 import logging
 
 from SoftSplitTreeModel import SoftSplitDecisionTreeClassifier
+from PathSofteningTreeModel import PathSofteningTreeModel
 
 logger = logging.getLogger(__name__)
 
-def repeated_kfold_cross_validation(df, target_column, n_splits=5, n_repeats=2,
+def repeated_kfold_cross_validation(df, target_column, should_use_improved_version, n_splits=5, n_repeats=2,
                                     alpha=0.1, n_runs=100, random_state=42):
     """
     Perform repeated K-fold cross-validation to evaluate both standard and soft split decision trees.
@@ -141,11 +142,7 @@ def repeated_kfold_cross_validation(df, target_column, n_splits=5, n_repeats=2,
         # ========================================================================
         # Soft Split Decision Tree
         # ========================================================================
-        soft_dt = SoftSplitDecisionTreeClassifier(
-            alpha=alpha,
-            n_runs=n_runs,
-            random_state=random_state
-        )
+        soft_dt = get_model(alpha, n_runs, random_state, should_use_improved_version)
         soft_dt.fit(X_train, y_train)
         
         y_proba_soft = soft_dt.predict_proba(X_test)
@@ -281,3 +278,13 @@ def repeated_kfold_cross_validation(df, target_column, n_splits=5, n_repeats=2,
             'random_state': random_state
         }
     }
+
+def get_model(alpha, n_runs, random_state, should_use_improved_model):
+    if should_use_improved_model:
+        return PathSofteningTreeModel(alpha=alpha, random_state=random_state)
+    
+    return SoftSplitDecisionTreeClassifier(
+            alpha=alpha,
+            n_runs=n_runs,
+            random_state=random_state
+        )

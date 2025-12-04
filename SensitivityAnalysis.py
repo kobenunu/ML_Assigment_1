@@ -14,6 +14,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from SoftSplitTreeModel import SoftSplitDecisionTreeClassifier
+from PathSofteningTreeModel import PathSofteningTreeModel
 
 logger = logging.getLogger(__name__)
 
@@ -50,10 +51,10 @@ def prepare_data(df, target_column='target', test_size=0.2, random_state=42):
     
     return X_train, X_test, y_train, y_test, n_classes
 
-def run_combined_sensitivity(df, target_column='target',
+def run_combined_sensitivity(df,should_use_improved_version, target_column='target',
                              alpha_values=[0.05, 0.1, 0.15, 0.2],
                              n_runs_values=[50, 100, 150],
-                             test_size=0.2, random_state=42):
+                             test_size=0.2, random_state=42, should_use_improved_model=False):
     """
     Test all combinations of alpha and n_runs (for heatmap visualization).
     
@@ -119,12 +120,7 @@ def run_combined_sensitivity(df, target_column='target',
             current += 1
             logger.info(f"\n[{current}/{total}] Testing alpha={alpha}, n_runs={n_runs}")
             
-            soft_dt = SoftSplitDecisionTreeClassifier(
-                alpha=alpha,
-                n_runs=n_runs,
-                random_state=random_state,
-                max_depth=1
-            )
+            soft_dt = get_model(random_state, alpha, n_runs, should_use_improved_model)
             soft_dt.fit(X_train, y_train)
             
             y_proba_soft = soft_dt.predict_proba(X_test)
@@ -159,3 +155,12 @@ def run_combined_sensitivity(df, target_column='target',
     logger.info("\n" + results_df.to_string(index=False))
     
     return results_df
+
+def get_model(random_state, alpha, n_runs, should_use_improved_version):
+    if should_use_improved_version:
+        return PathSofteningTreeModel(alpha=alpha, random_state=random_state)
+    return SoftSplitDecisionTreeClassifier(
+                alpha=alpha,
+                n_runs=n_runs,
+                random_state=random_state,
+            )

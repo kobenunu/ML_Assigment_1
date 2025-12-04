@@ -32,7 +32,7 @@ def get_dataset_name(file_path):
     basename = os.path.basename(file_path)
     return basename.replace('_processed.csv', '')
 
-def run_cross_validation_on_all_datasets(n_splits=5, n_repeats=2, alpha=0.1, 
+def run_cross_validation_on_all_datasets(should_use_improved_version, n_splits=5, n_repeats=2, alpha=0.1, 
                                          n_runs=100, random_state=42):
     """
     Run cross-validation on all preprocessed datasets.
@@ -88,6 +88,7 @@ def run_cross_validation_on_all_datasets(n_splits=5, n_repeats=2, alpha=0.1,
             cv_results = repeated_kfold_cross_validation(
                 df=df,
                 target_column='target',
+                should_use_improved_version = should_use_improved_version,
                 n_splits=n_splits,
                 n_repeats=n_repeats,
                 alpha=alpha,
@@ -169,7 +170,7 @@ def run_cross_validation_on_all_datasets(n_splits=5, n_repeats=2, alpha=0.1,
         }
     }
 
-def run_sensitivity_analysis(dataset_path, target_column='target', 
+def run_sensitivity_analysis(dataset_path, should_use_improved_version, target_column='target', 
                              alphas=[0.05, 0.1, 0.3, 0.5],
                              n_runs_list=[50, 100, 150, 200],
                              n_splits=5, n_repeats=2, random_state=42):
@@ -217,6 +218,7 @@ def run_sensitivity_analysis(dataset_path, target_column='target',
         cv_results = repeated_kfold_cross_validation(
             df=df,
             target_column=target_column,
+            should_use_improved_version=should_use_improved_version,
             n_splits=n_splits,
             n_repeats=n_repeats,
             alpha=alpha,
@@ -241,6 +243,7 @@ def run_sensitivity_analysis(dataset_path, target_column='target',
         cv_results = repeated_kfold_cross_validation(
             df=df,
             target_column=target_column,
+            should_use_improved_version=should_use_improved_version,
             n_splits=n_splits,
             n_repeats=n_repeats,
             alpha=0.1,
@@ -290,12 +293,13 @@ def run_sensitivity_analysis(dataset_path, target_column='target',
         'dataset': dataset_name
     }
 
-def run_cross_validation():
+def run_cross_validation(should_use_improved_version=False):
     logger.info("Starting Cross-Validation Analysis")
     logger.info("="*80)
     
     # Run cross-validation on all datasets
     results = run_cross_validation_on_all_datasets(
+        should_use_improved_version = should_use_improved_version,
         n_splits=5,      # At least 5 folds (requirement)
         n_repeats=2,     # At least 2 repetitions (requirement)
         alpha=0.1,       # Default soft split parameter
@@ -317,6 +321,7 @@ def run_cross_validation():
             
             sensitivity_results = run_sensitivity_analysis(
                 dataset_path=first_dataset,
+                should_use_improved_version=should_use_improved_version,
                 target_column='target',
                 alphas=[0.05, 0.1, 0.15, 0.2],
                 n_runs_list=[50, 100, 150],
