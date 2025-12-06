@@ -1,4 +1,4 @@
-https://www.kaggle.com/datasets/mayankpatel14/second-hand-used-cars-data-set-linear-regression
+https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification
 https://www.kaggle.com/datasets/denkuznetz/food-delivery-time-prediction
 https://www.kaggle.com/datasets/paolocons/another-fiat-500-dataset-1538-rows
 https://www.kaggle.com/datasets/aggle6666/laptop-price-prediction-dataset

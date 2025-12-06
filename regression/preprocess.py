@@ -99,13 +99,12 @@ def preprocess_laptop_price_data():
         actions=[clean_laptop_data]
     )
 
-def preprocess_second_hand_car_data():
-    """Preprocesses the second-hand car dataset."""
-    logger.info("--- Preprocessing Second-Hand Car Dataset ---")
+def preprocess_phone_data():
+    """Preprocesses the phone dataset."""
+    logger.info("--- Preprocessing Phone Dataset ---")
     preprocess_dataset(
-        dataset_name='second-hand-used-cars-data-set-linear-regression',
-        target_column='current price',
-        drop_columns=['v.id']
+        dataset_name='phone',
+        target_column='battery_power'
     )
 
 def preprocess_bank_churn_data_regression():
@@ -125,7 +124,7 @@ def main():
     preprocess_fiat_data()
     preprocess_food_delivery_data()
     preprocess_laptop_price_data()
-    preprocess_second_hand_car_data()
+    preprocess_phone_data()
     preprocess_bank_churn_data_regression()
     logger.info("All regression datasets have been processed and saved.")
 
