@@ -5,6 +5,7 @@ import os
 from regression.KFoldCrossValidation import repeated_kfold_cross_validation_regression
 from regression.SensitivityAnalysis import run_combined_sensitivity_regression
 from regression.preprocess import main as preprocess_main
+from regression.GenerateVisualizations import generate_visualizations
 
 # Configure logging
 logging.basicConfig(
@@ -30,10 +31,10 @@ def run_regression_experiments(dataset_path, target_column):
     """
     df = load_regression_data(dataset_path)
     if df is None:
-        return
+        return None, None
 
     # --- Repeated K-Fold Cross-Validation ---
-    repeated_kfold_cross_validation_regression(
+    cv_results = repeated_kfold_cross_validation_regression(
         df=df,
         target_column=target_column,
         n_splits=5,
@@ -44,7 +45,7 @@ def run_regression_experiments(dataset_path, target_column):
     )
 
     # --- Sensitivity Analysis ---
-    run_combined_sensitivity_regression(
+    sensitivity_results_df = run_combined_sensitivity_regression(
         df=df,
         target_column=target_column,
         alpha_values=[0.05, 0.1, 0.15, 0.2, 0.25],
@@ -52,6 +53,8 @@ def run_regression_experiments(dataset_path, target_column):
         test_size=0.2,
         random_state=42
     )
+    
+    return cv_results, sensitivity_results_df
 
 if __name__ == "__main__":
     # 1. Preprocess all datasets
@@ -66,8 +69,29 @@ if __name__ == "__main__":
         'bank_churn': 'bank_churn_processed'
     }
 
-    # 3. Run experiments on each processed dataset
+    # 3. Run experiments and collect results
+    all_cv_results = []
+    all_sensitivity_results = []
+
     for name, filename in processed_datasets.items():
         logger.info(f"\n{'='*20} Running Experiments for: {name.upper()} {'='*20}")
         dataset_path = f"./regression/datasets/processed/{filename}.csv"
-        run_regression_experiments(dataset_path, target_column='target')
+        
+        cv_res, sens_res = run_regression_experiments(dataset_path, target_column='target')
+
+        if cv_res:
+            standard_mse = cv_res['statistics']['standard']['mse_mean']
+            soft_mse = cv_res['statistics']['soft']['mse_mean']
+            all_cv_results.append({'dataset': name, 'model': 'Standard DTR', 'mse_mean': standard_mse})
+            all_cv_results.append({'dataset': name, 'model': 'Soft Split DTR', 'mse_mean': soft_mse})
+
+        if sens_res is not None:
+            sens_res['dataset'] = name
+            all_sensitivity_results.append(sens_res)
+
+    # 4. Combine results into DataFrames
+    cv_summary_df = pd.DataFrame(all_cv_results)
+    sensitivity_summary_df = pd.concat(all_sensitivity_results, ignore_index=True) if all_sensitivity_results else pd.DataFrame()
+
+    # 5. Generate visualizations
+    generate_visualizations(cv_summary_df, sensitivity_summary_df)
