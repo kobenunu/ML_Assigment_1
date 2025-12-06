@@ -62,7 +62,8 @@ if __name__ == "__main__":
         'fiat': 'another-fiat-500-dataset-1538-rows_processed',
         'food_delivery': 'food-delivery-time-prediction_processed',
         'laptop_price': 'laptop-price-prediction-dataset_processed',
-        'second_hand_car': 'second-hand-used-cars-data-set-linear-regression_processed'
+        'second_hand_car': 'second-hand-used-cars-data-set-linear-regression_processed',
+        'bank_churn': 'bank_churn_processed'
     }
 
     # 3. Run experiments on each processed dataset

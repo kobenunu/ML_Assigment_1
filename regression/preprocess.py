@@ -59,6 +59,13 @@ def clean_laptop_data(df):
         df['Weight'] = df['Weight'].str.replace('kg', '').astype(float)
     return df
 
+def map_gender(df):
+    """Maps gender to numerical values."""
+    df = df.copy()
+    if 'gender' in df.columns:
+        df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
+    return df
+
 # --- Specific Preprocessing Functions ---
 
 def preprocess_fiat_data():
@@ -101,6 +108,17 @@ def preprocess_second_hand_car_data():
         drop_columns=['v.id']
     )
 
+def preprocess_bank_churn_data_regression():
+    """Preprocesses the bank churn dataset for regression."""
+    logger.info("--- Preprocessing Bank Churn Dataset for Regression ---")
+    preprocess_dataset(
+        dataset_name='bank_churn',
+        target_column='estimated_salary',
+        drop_columns=["customer_id", "churn"],
+        cat_cols=["country"],
+        actions=[map_gender]
+    )
+
 def main():
     """Runs all preprocessing steps for the regression datasets."""
     logger.info("Starting preprocessing for all regression datasets...")
@@ -108,6 +126,7 @@ def main():
     preprocess_food_delivery_data()
     preprocess_laptop_price_data()
     preprocess_second_hand_car_data()
+    preprocess_bank_churn_data_regression()
     logger.info("All regression datasets have been processed and saved.")
 
 if __name__ == "__main__":
