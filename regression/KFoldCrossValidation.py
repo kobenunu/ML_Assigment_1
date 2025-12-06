@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 from scipy import stats
 import logging
 
-from regression.SoftSplitTreeRegressor import SoftSplitTreeRegressor
+from .SoftSplitTreeRegressor import SoftSplitTreeRegressor
 
 logger = logging.getLogger(__name__)
 

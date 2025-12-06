@@ -2,10 +2,10 @@ import logging
 from rich.logging import RichHandler
 import pandas as pd
 import os
-from regression.KFoldCrossValidation import repeated_kfold_cross_validation_regression
-from regression.SensitivityAnalysis import run_combined_sensitivity_regression
-from regression.preprocess import main as preprocess_main
-from regression.GenerateVisualizations import generate_visualizations
+from .KFoldCrossValidation import repeated_kfold_cross_validation_regression
+from .SensitivityAnalysis import run_combined_sensitivity_regression
+from .preprocess import main as preprocess_main
+from .GenerateVisualizations import generate_visualizations
 
 # Configure logging
 logging.basicConfig(

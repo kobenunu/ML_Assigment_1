@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import LabelEncoder
-from regression.SoftSplitTreeRegressor import SoftSplitTreeRegressor
+from .SoftSplitTreeRegressor import SoftSplitTreeRegressor
 
 logger = logging.getLogger(__name__)
 
