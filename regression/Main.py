@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from regression.KFoldCrossValidation import repeated_kfold_cross_validation_regression
 from regression.SensitivityAnalysis import run_combined_sensitivity_regression
+from regression.preprocess import main as preprocess_main
 
 # Configure logging
 logging.basicConfig(
@@ -53,15 +54,19 @@ def run_regression_experiments(dataset_path, target_column):
     )
 
 if __name__ == "__main__":
-    # This is a placeholder. When datasets are available, this will be updated.
-    # Example: run_regression_experiments('path/to/your/dataset.csv', 'your_target_column')
-    logger.info("Regression analysis script is ready.")
-    logger.info("To run experiments, update the main block with your dataset path and target column.")
-    # Example usage (commented out):
-    # dataset_files = {
-    #     'dataset1': {'path': './regression/datasets/dataset1.csv', 'target': 'target1'},
-    #     'dataset2': {'path': './regression/datasets/dataset2.csv', 'target': 'target2'}
-    # }
-    # for name, info in dataset_files.items():
-    #     logger.info(f"--- Running experiments for {name} ---")
-    #     run_regression_experiments(info['path'], info['target'])
+    # 1. Preprocess all datasets
+    # preprocess_main()
+
+    # 2. Define processed datasets and their target columns
+    processed_datasets = {
+        'fiat': 'another-fiat-500-dataset-1538-rows_processed',
+        'food_delivery': 'food-delivery-time-prediction_processed',
+        'laptop_price': 'laptop-price-prediction-dataset_processed',
+        'second_hand_car': 'second-hand-used-cars-data-set-linear-regression_processed'
+    }
+
+    # 3. Run experiments on each processed dataset
+    for name, filename in processed_datasets.items():
+        logger.info(f"\n{'='*20} Running Experiments for: {name.upper()} {'='*20}")
+        dataset_path = f"./regression/datasets/processed/{filename}.csv"
+        run_regression_experiments(dataset_path, target_column='target')
